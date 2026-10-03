@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Desk setups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ease: cubic-bezier(.2,.7,.2,1); --ink: #fff; --ink2: rgba(255,255,255,.55); --ink3: rgba(255,255,255,.38); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #0b0c10; color: var(--ink); font: 500 16px/1.4 Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1380px; margin: 0 auto; padding: 72px 30px 120px; }
+  h1 { font-size: clamp(46px, 7vw, 80px); font-weight: 600; letter-spacing: -.03em; line-height: 1; }
+  .sub { margin-top: 18px; font-size: clamp(18px, 2vw, 24px); line-height: 1.3; color: var(--ink2); max-width: 760px; }
+  .fade { opacity: 0; transform: translateY(28px); filter: blur(8px); animation: up 1s var(--ease) forwards; }
+  @keyframes up { to { opacity: 1; transform: none; filter: none; } }
+
+  /* ---------- picker ---------- */
+  .picker { margin-top: 56px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+  .pick { position: relative; border: 0; background: #15171d; color: inherit; border-radius: 18px; overflow: hidden; cursor: pointer; text-align: left;
+          transition: transform .5s var(--ease), box-shadow .5s var(--ease); }
+  .pick:hover { transform: scale(1.03); }
+  .pick img { display: block; width: 100%; aspect-ratio: 32/9; object-fit: cover; opacity: .75; transition: opacity .4s var(--ease); }
+  .pick span { display: block; padding: 12px 14px 14px; font-weight: 600; letter-spacing: -.01em; }
+  .pick small { display: block; color: var(--ink3); font-size: 13px; font-weight: 500; margin-top: 2px; }
+  .pick.on { box-shadow: 0 0 0 2px var(--accent, #fff), 0 16px 40px -18px var(--accent, #000); }
+  .pick.on img { opacity: 1; }
+
+  /* ---------- stage ---------- */
+  .stage { position: relative; margin-top: 40px; border-radius: 24px; overflow: hidden; background: #07080b; aspect-ratio: 16/8.2; }
+  .wall { position: absolute; inset: 0; transition: background 2s var(--ease); }
+  .wash { position: absolute; left: 6%; right: 6%; top: 8%; height: 72%; filter: blur(60px); opacity: .55; transition: background 1.2s var(--ease); }
+  .halo { position: absolute; left: 22%; right: 22%; top: 6%; height: 50%; filter: blur(70px); opacity: .5; border-radius: 50%; }
+  .desk { position: absolute; left: 0; right: 0; bottom: 0; height: 21%; background: linear-gradient(#1a1b20, #0d0e12); box-shadow: 0 -1px 0 rgba(255,255,255,.06); }
+  .strip { position: absolute; left: 9%; right: 9%; bottom: 21%; height: 3px; border-radius: 3px; filter: blur(.4px); }
+  .strip::after { content: ""; position: absolute; inset: -14px -4%; background: inherit; filter: blur(18px); opacity: .9; }
+
+  .monitor { position: absolute; left: 21%; width: 58%; bottom: 33%; aspect-ratio: 32/9; border-radius: 10px; background: #000; padding: .45%;
+             box-shadow: 0 30px 60px -20px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.05); }
+  .monitor video, .monitor img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; display: block; }
+  .stand { position: absolute; left: 47%; width: 6%; bottom: 21%; height: 12.5%; background: linear-gradient(90deg,#191a1f,#2a2c33,#191a1f); clip-path: polygon(35% 0,65% 0,70% 78%,100% 100%,0 100%,30% 78%); }
+
+  .tower { position: absolute; bottom: 21%; width: 15%; aspect-ratio: .52; border-radius: 10px; background: #0f1015; box-shadow: 0 20px 50px -18px rgba(0,0,0,.9), inset 0 0 0 1px rgba(255,255,255,.06); overflow: hidden; }
+  .tower.left { left: 3%; } .tower.right { right: 3%; }
+  .glass { position: absolute; inset: 5% 6% 5% 6%; border-radius: 6px; background: linear-gradient(135deg, rgba(255,255,255,.05), rgba(255,255,255,0) 40%); box-shadow: inset 0 0 0 1px rgba(255,255,255,.07); }
+  .board { position: absolute; left: 16%; right: 14%; top: 9%; height: 46%; border-radius: 4px; background: #121319; box-shadow: inset 0 0 0 1px rgba(255,255,255,.04); }
+  .logo { position: absolute; left: 18%; top: 14%; width: 30%; height: 7%; border-radius: 3px; }
+  .rams { position: absolute; left: 58%; top: 12%; display: flex; gap: 6%; width: 30%; height: 38%; }
+  .stick { flex: 1; display: flex; flex-direction: column; border-radius: 2px; overflow: hidden; background: #000; }
+  .stick i { flex: 1; display: block; }
+  .gpu { position: absolute; left: 12%; right: 10%; top: 60%; height: 10%; border-radius: 4px; background: #16171d; overflow: hidden; }
+  .gpu i { position: absolute; left: 6%; right: 6%; bottom: 0; height: 22%; border-radius: 2px; }
+  .fans { position: absolute; left: 4%; top: 9%; width: 9%; display: flex; flex-direction: column; gap: 4%; height: 80%; }
+  .tower.right .fans { left: auto; right: 4%; }
+  .fan { position: relative; flex: 1; border-radius: 50%; }
+  .fan::before { content: ""; position: absolute; inset: 18%; border-radius: 50%; background: #0b0c10; }
+  .front { position: absolute; top: 76%; left: 14%; right: 14%; height: 13%; border-radius: 8px; opacity: .9; }
+  .label { position: absolute; bottom: calc(21% - 34px); font-size: 13px; color: var(--ink3); width: 15%; text-align: center; }
+  .label.left { left: 3%; } .label.right { right: 3%; }
+
+  /* ---------- details ---------- */
+  .detail { display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; margin-top: 24px; }
+  .card { background: #15171d; border-radius: 24px; padding: 32px; }
+  .card h2 { font-size: clamp(32px, 4vw, 40px); font-weight: 600; letter-spacing: -.03em; line-height: 1; }
+  .card p { margin-top: 12px; color: var(--ink2); font-size: 18px; }
+  .parts { margin-top: 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; }
+  .part { display: flex; align-items: center; gap: 12px; font-size: 15px; }
+  .sw { width: 34px; height: 22px; border-radius: 6px; flex: none; box-shadow: 0 0 18px -4px var(--c); background: var(--c); }
+  .sw.grad { background: var(--c); }
+  .cmd { margin-top: 22px; font: 600 15px/1 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--ink); background: #0b0c10; border-radius: 14px; padding: 16px 18px; }
+  .note { margin-top: 14px; font-size: 14px; color: var(--ink3); }
+  .moves { margin-top: 18px; display: grid; gap: 10px; color: var(--ink2); font-size: 16px; }
+  @media (max-width: 900px) { .picker { grid-template-columns: repeat(3, 1fr); } .detail { grid-template-columns: 1fr; } .wrap { padding: 56px 18px 100px; } }
+  @media (prefers-reduced-motion: reduce) { .fade { animation: none; opacity: 1; transform: none; filter: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 class="fade">Pick your next<br>desk mood.</h1>
+  <p class="sub fade" style="animation-delay:.1s">Five new setups for your desk. Each one is a live ultrawide wallpaper with lights to match. Tap one to see it run on your desk.</p>
+
+  <div class="picker fade" style="animation-delay:.2s" id="picker"></div>
+
+  <div class="stage fade" style="animation-delay:.3s" id="stage">
+    <div class="wall" id="wall"></div>
+    <div class="wash" id="wash"></div>
+    <div class="halo" id="halo"></div>
+    <div class="tower left" id="factory"></div>
+    <div class="tower right" id="omega"></div>
+    <div class="monitor"><video id="vid" muted loop playsinline autoplay preload="auto"></video></div>
+    <div class="stand"></div>
+    <div class="desk"></div>
+    <div class="strip" id="strip"></div>
+  </div>
+
+  <div class="detail">
+    <div class="card">
+      <h2 id="name"></h2>
+      <p id="story"></p>
+      <div class="moves" id="moves"></div>
+    </div>
+    <div class="card">
+      <h2>The lights</h2>
+      <div class="parts" id="parts"></div>
+      <div class="cmd" id="cmd"></div>
+      <p class="note">One command sets both PCs, the desk strip, the monitor light and the wallpaper on Glass. A plain on still boots your purple.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const SETUPS = [
+  { id: 'cyberpunk', names: ['pink', 'blue'], name: 'Cyberpunk', sub: 'Now', story: 'Your current setup. A ronin with a pink katana over a neon kanji city, koi drifting through the rain.',
+    argb: 'FF0080', board: '8A00FF', boardF: 'FCE600', gpu: '00E5FF', ram: ['00E5FF', 'FF0080'], strip: ['FF0080', '8A00FF', '00E5FF'], lamp: '00E5FF', swap: ['FF0080', '00E5FF'], wall: '#12051d' },
+  { id: 'outrun', names: ['magenta', 'orange'], name: 'Outrun', sub: 'Synthwave sunset', story: 'A rider tears down a neon highway into a giant striped sun. Hot magenta grid, palm silhouettes, warm haze.',
+    argb: 'FF2E97', board: '5B00FF', gpu: 'FF6A00', ram: ['FF6A00', 'FF2E97'], strip: ['FF6A00', 'FF2E97', '5B00FF'], lamp: 'FF2E97', swap: ['FF2E97', 'FF6A00'], wall: '#1a0716' },
+  { id: 'bloodmoon', names: ['crimson', 'ember'], name: 'Blood Moon', sub: 'Oni samurai', story: 'An oni-masked samurai in a field of red spider lilies under a huge blood moon. Embers drift through the torii gates.',
+    argb: 'FF1A1A', board: 'FFB000', gpu: 'FF5A00', ram: ['FF1A1A', 'FF5A00'], strip: ['FF5A00', 'FF0000', 'FF5A00'], lamp: 'FF1A1A', swap: ['FF1A1A', 'FF5A00'], wall: '#160404' },
+  { id: 'iceronin', names: ['ice blue', 'violet'], name: 'Ice Ronin', sub: 'Aurora shrine', story: 'A ronin meditates on a frozen mountain shrine while the aurora ripples above the peaks. Snow falls the whole time.',
+    argb: '00D5FF', board: 'E8F7FF', gpu: '6A3CFF', ram: ['E8F7FF', '00D5FF'], strip: ['00FFC6', '00D5FF', '6A3CFF'], lamp: '00D5FF', swap: ['00D5FF', '6A3CFF'], wall: '#04101c' },
+  { id: 'neomelbourne', names: ['amber', 'teal'], name: 'Neo-Melbourne', sub: 'Flinders St, 2099', story: 'Rain on Flinders Street in 2099. The clocks glow amber, trams hum with neon and billboards drift in the fog.',
+    argb: 'FF8C00', board: '00C8B4', gpu: '00C8B4', ram: ['FF8C00', '00C8B4'], strip: ['FF8C00', 'FF5A00', '00C8B4'], lamp: 'FF8C00', swap: ['FF8C00', '00C8B4'], wall: '#140c03' },
+  { id: 'neondojo', names: ['violet', 'gold'], name: 'Neon Dojo', sub: 'Train at midnight', story: 'A fighter in glowing gold wraps throws a punch at a heavy bag in a rooftop dojo, with the city far below. Made for you.',
+    argb: '7A2CFF', board: 'FFB800', gpu: 'FFB800', ram: ['FFB800', '7A2CFF'], strip: ['7A2CFF', 'B04CFF', 'FFB800'], lamp: 'FFB800', swap: ['7A2CFF', 'FFB800'], wall: '#0d0619' },
+];
+
+const hex = h => [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+const css = (c, k = 1) => `rgb(${c.map(v => Math.round(v * k)).join(',')})`;
+const mix = (a, b, m) => a.map((v, i) => v + (b[i] - v) * m);
+const smooth = x => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
+
+// Same timeline as live_fx.py, sped up so the swap shows within a short look (40 s hold -> 9 s).
+const HOLD = 9, FADE = 4, SPREAD = 1.6, CYCLE = 2 * (HOLD + FADE + SPREAD);
+function swapAt(t, x) {
+  const tt = t % CYCLE;
+  return smooth((tt - HOLD - SPREAD * x) / FADE) - smooth((tt - (2 * HOLD + FADE + SPREAD) - SPREAD * (1 - x)) / FADE);
+}
+const level = (t, x) => .70 + .30 * (.5 + .5 * Math.sin(2 * Math.PI * (t / 12 - .9 * x)));
+
+function buildTower(el, sticks, ledsPerStick, fans) {
+  el.innerHTML = `<div class="glass"></div><div class="board"></div><div class="logo"></div>
+    <div class="rams">${Array.from({ length: sticks }, () => `<div class="stick">${'<i></i>'.repeat(ledsPerStick)}</div>`).join('')}</div>
+    <div class="gpu"><i></i></div><div class="fans">${'<div class="fan"></div>'.repeat(fans)}</div><div class="front"></div>`;
+  return { logo: el.querySelector('.logo'), leds: [...el.querySelectorAll('.stick')].map(s => [...s.children]),
+           gpu: el.querySelector('.gpu i'), fans: [...el.querySelectorAll('.fan')], front: el.querySelector('.front') };
+}
+const T = { factory: buildTower(document.getElementById('factory'), 3, 6, 4), omega: buildTower(document.getElementById('omega'), 4, 10, 3) };
+const X = { factory: .15, omega: .85 };
+
+let cur = SETUPS[0];
+const vid = document.getElementById('vid');
+
+function pick(s) {
+  cur = s;
+  document.querySelectorAll('.pick').forEach(p => p.classList.toggle('on', p.dataset.id === s.id));
+  document.documentElement.style.setProperty('--accent', '#' + s.argb);
+  vid.poster = `previews/${s.id}.jpg`; vid.src = `previews/${s.id}.mp4`; vid.play().catch(() => {});
+  document.getElementById('wall').style.background = `radial-gradient(120% 90% at 50% 30%, ${s.wall}, #050507 70%)`;
+  document.getElementById('name').textContent = s.name;
+  document.getElementById('story').textContent = s.story;
+  document.getElementById('moves').innerHTML = [
+    'The wallpaper loops seamlessly with rain, glow and drifting particles.',
+    'RAM runs a slow waterfall in the two scene colours.',
+    `About every minute the ${s.names[0]} and ${s.names[1]} trade places between the PCs.`,
+    'The desk strip and monitor light hold the scene steady.'
+  ].map(t => `<div>${t}</div>`).join('');
+  const sw = (c, label) => `<div class="part"><span class="sw" style="--c:#${c}"></span>${label}</div>`;
+  document.getElementById('parts').innerHTML =
+    sw(s.argb, 'Fans and front') + sw(s.gpu, 'Graphics cards') +
+    `<div class="part"><span class="sw" style="--c:linear-gradient(180deg,#${s.ram[0]},#${s.ram[1]})"></span>RAM waterfall</div>` + sw(s.board, 'Logo and accents') +
+    `<div class="part"><span class="sw" style="--c:linear-gradient(90deg,${s.strip.map(c => '#' + c).join(',')})"></span>Desk strip</div>` + sw(s.lamp, 'Monitor light');
+  document.getElementById('cmd').textContent = s.id === 'cyberpunk' ? 'pc-lights color cyberpunk   (on now)' : `pc-lights color ${s.id}`;
+  const stops = s.strip.map(c => '#' + c).join(',');
+  document.getElementById('strip').style.background = `linear-gradient(90deg, ${stops})`;
+  document.getElementById('wash').style.background = `linear-gradient(90deg, ${stops})`;
+  document.getElementById('halo').style.background = '#' + s.lamp;
+}
+
+const picker = document.getElementById('picker');
+picker.innerHTML = SETUPS.map(s => `<button class="pick" data-id="${s.id}"><img src="previews/${s.id}.jpg" alt=""><span>${s.name}<small>${s.sub}</small></span></button>`).join('');
+picker.addEventListener('click', e => { const b = e.target.closest('.pick'); if (b) pick(SETUPS.find(s => s.id === b.dataset.id)); });
+pick(SETUPS.find(s => s.id === new URLSearchParams(location.search).get('s')) || SETUPS[0]);
+
+// ---------- frame loop: the same motion as live mode ----------
+const t0 = performance.now();
+let last = 0;
+function frame(now) {
+  requestAnimationFrame(frame);
+  if (now - last < 33) return; last = now;
+  const t = (now - t0) / 1000, s = cur;
+  const A = hex(s.swap[0]), B = hex(s.swap[1]);
+  const sw = (c, m) => { const h = c.toUpperCase(); return h === s.swap[0] ? mix(A, B, m) : h === s.swap[1] ? mix(B, A, m) : hex(c); };
+  for (const host of ['factory', 'omega']) {
+    const tw = T[host], x = X[host], m = swapAt(t, x), lv = level(t, x);
+    const glow = (el, c, k = lv, r = 16) => { el.style.background = css(c, k); el.style.boxShadow = `0 0 ${r}px ${css(c, k * .9)}`; };
+    glow(tw.logo, sw(host === 'factory' && s.boardF ? s.boardF : s.board, m));
+    glow(tw.gpu, sw(s.gpu, m), lv, 22);
+    { const c = sw(s.argb, m); tw.front.style.background = `linear-gradient(180deg, ${css(c, lv * .25)}, ${css(c, lv)} 55%, ${css(c, lv * .35)})`; tw.front.style.boxShadow = `0 0 30px ${css(c, lv * .6)}`; }
+    tw.fans.forEach((f, i) => {
+      const c = sw(s.argb, m);
+      f.style.background = `conic-gradient(from ${t * 40 + i * 50}deg, ${css(c, lv)}, ${css(c, lv * .35)}, ${css(c, lv)})`;
+      f.style.boxShadow = `0 0 14px ${css(c, lv * .7)}`;
+    });
+    const ra = sw(s.ram[0], m), rb = sw(s.ram[1], m);
+    tw.leds.forEach((stick, si) => stick.forEach((led, li) => {
+      const u = li / (stick.length - 1);
+      const k = Math.pow(.5 + .5 * Math.cos(2 * Math.PI * (u * .85 + .13 * si - t * .45)), 1.6);
+      const c = mix(rb, ra, k);
+      led.style.background = css(c, .55 + .45 * lv);
+    }));
+  }
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
