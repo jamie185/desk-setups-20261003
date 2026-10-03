@@ -71,6 +71,9 @@
   .cmd { margin-top: 22px; font: 600 15px/1 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--ink); background: #0b0c10; border-radius: 14px; padding: 16px 18px; }
   .note { margin-top: 14px; font-size: 14px; color: var(--ink3); }
   .moves { margin-top: 18px; display: grid; gap: 10px; color: var(--ink2); font-size: 16px; }
+  .wpm { display: none; margin-top: 32px; border-radius: 18px; overflow: hidden; background: #000; }
+  .wpm video { display: block; width: 100%; aspect-ratio: 32/9; object-fit: cover; }
+  @media (max-width: 700px) { .wpm { display: block; } .stage { margin-top: 16px; } }
   @media (max-width: 900px) { .picker { grid-template-columns: repeat(3, 1fr); } .detail { grid-template-columns: 1fr; } .wrap { padding: 56px 18px 100px; } }
   @media (prefers-reduced-motion: reduce) { .fade { animation: none; opacity: 1; transform: none; filter: none; } }
 </style>
@@ -82,6 +85,7 @@
 
   <div class="picker fade" style="animation-delay:.2s" id="picker"></div>
 
+  <div class="wpm fade" style="animation-delay:.25s"><video id="vidm" muted loop playsinline autoplay preload="auto"></video></div>
   <div class="stage fade" style="animation-delay:.3s" id="stage">
     <div class="wall" id="wall"></div>
     <div class="wash" id="wash"></div>
@@ -111,17 +115,17 @@
 
 <script>
 const SETUPS = [
-  { id: 'cyberpunk', names: ['pink', 'blue'], name: 'Cyberpunk', sub: 'Now', story: 'Your current setup. A ronin with a pink katana over a neon kanji city, koi drifting through the rain.',
+  { id: 'cyberpunk', fx: 'rain and cherry petals', names: ['pink', 'blue'], name: 'Cyberpunk', sub: 'Now', story: 'Your current setup. A ronin with a pink katana over a neon kanji city, koi drifting through the rain.',
     argb: 'FF0080', board: '8A00FF', boardF: 'FCE600', gpu: '00E5FF', ram: ['00E5FF', 'FF0080'], strip: ['FF0080', '8A00FF', '00E5FF'], lamp: '00E5FF', swap: ['FF0080', '00E5FF'], wall: '#12051d' },
-  { id: 'outrun', names: ['magenta', 'orange'], name: 'Outrun', sub: 'Synthwave sunset', story: 'A rider tears down a neon highway into a giant striped sun. Hot magenta grid, palm silhouettes, warm haze.',
+  { id: 'outrun', fx: 'warm dust drifting through the sunset', names: ['magenta', 'orange'], name: 'Outrun', sub: 'Synthwave sunset', story: 'A rider tears down a neon highway into a giant striped sun. Hot magenta grid, palm silhouettes, warm haze.',
     argb: 'FF2E97', board: '5B00FF', gpu: 'FF6A00', ram: ['FF6A00', 'FF2E97'], strip: ['FF6A00', 'FF2E97', '5B00FF'], lamp: 'FF2E97', swap: ['FF2E97', 'FF6A00'], wall: '#1a0716' },
-  { id: 'bloodmoon', names: ['crimson', 'ember'], name: 'Blood Moon', sub: 'Oni samurai', story: 'An oni-masked samurai in a field of red spider lilies under a huge blood moon. Embers drift through the torii gates.',
+  { id: 'bloodmoon', fx: 'embers rising past the moon', names: ['crimson', 'ember'], name: 'Blood Moon', sub: 'Oni samurai', story: 'An oni-masked samurai in a field of red spider lilies under a huge blood moon. Embers drift through the torii gates.',
     argb: 'FF1A1A', board: 'FFB000', gpu: 'FF5A00', ram: ['FF1A1A', 'FF5A00'], strip: ['FF5A00', 'FF0000', 'FF5A00'], lamp: 'FF1A1A', swap: ['FF1A1A', 'FF5A00'], wall: '#160404' },
-  { id: 'iceronin', names: ['ice blue', 'violet'], name: 'Ice Ronin', sub: 'Aurora shrine', story: 'A ronin meditates on a frozen mountain shrine while the aurora ripples above the peaks. Snow falls the whole time.',
+  { id: 'iceronin', fx: 'snow falling the whole time', names: ['ice blue', 'violet'], name: 'Ice Ronin', sub: 'Aurora shrine', story: 'A ronin meditates on a frozen mountain shrine while the aurora ripples above the peaks. Snow falls the whole time.',
     argb: '00D5FF', board: 'E8F7FF', gpu: '6A3CFF', ram: ['E8F7FF', '00D5FF'], strip: ['00FFC6', '00D5FF', '6A3CFF'], lamp: '00D5FF', swap: ['00D5FF', '6A3CFF'], wall: '#04101c' },
-  { id: 'neomelbourne', names: ['amber', 'teal'], name: 'Neo-Melbourne', sub: 'Flinders St, 2099', story: 'Rain on Flinders Street in 2099. The clocks glow amber, trams hum with neon and billboards drift in the fog.',
+  { id: 'neomelbourne', fx: 'heavy rain over the street', names: ['amber', 'teal'], name: 'Neo-Melbourne', sub: 'Flinders St, 2099', story: 'Rain on Flinders Street in 2099. The clocks glow amber, trams hum with neon and billboards drift in the fog.',
     argb: 'FF8C00', board: '00C8B4', gpu: '00C8B4', ram: ['FF8C00', '00C8B4'], strip: ['FF8C00', 'FF5A00', '00C8B4'], lamp: 'FF8C00', swap: ['FF8C00', '00C8B4'], wall: '#140c03' },
-  { id: 'neondojo', names: ['violet', 'gold'], name: 'Neon Dojo', sub: 'Train at midnight', story: 'A fighter in glowing gold wraps throws a punch at a heavy bag in a rooftop dojo, with the city far below. Made for you.',
+  { id: 'neondojo', fx: 'dust motes floating in the lantern light', names: ['violet', 'gold'], name: 'Neon Dojo', sub: 'Train at midnight', story: 'A fighter in glowing gold wraps throws a punch at a heavy bag in a rooftop dojo, with the city far below. Made for you.',
     argb: '7A2CFF', board: 'FFB800', gpu: 'FFB800', ram: ['FFB800', '7A2CFF'], strip: ['7A2CFF', 'B04CFF', 'FFB800'], lamp: 'FFB800', swap: ['7A2CFF', 'FFB800'], wall: '#0d0619' },
 ];
 
@@ -155,12 +159,12 @@ function pick(s) {
   cur = s;
   document.querySelectorAll('.pick').forEach(p => p.classList.toggle('on', p.dataset.id === s.id));
   document.documentElement.style.setProperty('--accent', '#' + s.argb);
-  vid.poster = `previews/${s.id}.jpg`; vid.src = `previews/${s.id}.mp4`; vid.play().catch(() => {});
+  for (const v of [vid, document.getElementById('vidm')]) { v.poster = `previews/${s.id}.jpg`; v.src = `previews/${s.id}.mp4`; v.play().catch(() => {}); }
   document.getElementById('wall').style.background = `radial-gradient(120% 90% at 50% 30%, ${s.wall}, #050507 70%)`;
   document.getElementById('name').textContent = s.name;
   document.getElementById('story').textContent = s.story;
   document.getElementById('moves').innerHTML = [
-    'The wallpaper loops seamlessly with rain, glow and drifting particles.',
+    `The wallpaper loops seamlessly: neon that breathes and flickers, with ${s.fx}.`,
     'RAM runs a slow waterfall in the two scene colours.',
     `About every minute the ${s.names[0]} and ${s.names[1]} trade places between the PCs.`,
     'The desk strip and monitor light hold the scene steady.'
