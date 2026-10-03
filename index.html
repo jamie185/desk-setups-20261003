@@ -17,7 +17,7 @@
   @keyframes up { to { opacity: 1; transform: none; filter: none; } }
 
   /* ---------- picker ---------- */
-  .picker { margin-top: 56px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+  .picker { margin-top: 56px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
   .pick { position: relative; border: 0; background: #15171d; color: inherit; border-radius: 18px; overflow: hidden; cursor: pointer; text-align: left;
           transition: transform .5s var(--ease), box-shadow .5s var(--ease); }
   .pick:hover { transform: scale(1.03); }
@@ -81,7 +81,7 @@
 <body>
 <div class="wrap">
   <h1 class="fade">Pick your next<br>desk mood.</h1>
-  <p class="sub fade" style="animation-delay:.1s">Five new setups for your desk. Each one is a live ultrawide wallpaper with lights to match. Tap one to see it run on your desk.</p>
+  <p class="sub fade" style="animation-delay:.1s">Four new setups for your desk, ready to switch on. Each one is a live ultrawide wallpaper with lights to match. Tap one to see it run on your desk.</p>
 
   <div class="picker fade" style="animation-delay:.2s" id="picker"></div>
 
@@ -123,8 +123,6 @@ const SETUPS = [
     argb: 'FF1A1A', board: 'FFB000', gpu: 'FF5A00', ram: ['FF1A1A', 'FF5A00'], strip: ['FF5A00', 'FF0000', 'FF5A00'], lamp: 'FF1A1A', swap: ['FF1A1A', 'FF5A00'], wall: '#160404' },
   { id: 'iceronin', fx: 'snow falling the whole time', names: ['ice blue', 'violet'], name: 'Ice Ronin', sub: 'Aurora shrine', story: 'A ronin meditates on a frozen mountain shrine while the aurora ripples above the peaks. Snow falls the whole time.',
     argb: '00D5FF', board: 'E8F7FF', gpu: '6A3CFF', ram: ['E8F7FF', '00D5FF'], strip: ['00FFC6', '00D5FF', '6A3CFF'], lamp: '00D5FF', swap: ['00D5FF', '6A3CFF'], wall: '#04101c' },
-  { id: 'neomelbourne', fx: 'heavy rain over the street', names: ['amber', 'teal'], name: 'Neo-Melbourne', sub: 'Flinders St, 2099', story: 'Rain on Flinders Street in 2099. The clocks glow amber, trams hum with neon and billboards drift in the fog.',
-    argb: 'FF8C00', board: '00C8B4', gpu: '00C8B4', ram: ['FF8C00', '00C8B4'], strip: ['FF8C00', 'FF5A00', '00C8B4'], lamp: 'FF8C00', swap: ['FF8C00', '00C8B4'], wall: '#140c03' },
   { id: 'neondojo', fx: 'dust motes floating in the lantern light', names: ['violet', 'gold'], name: 'Neon Dojo', sub: 'Train at midnight', story: 'A fighter in glowing gold wraps throws a punch at a heavy bag in a rooftop dojo, with the city far below. Made for you.',
     argb: '7A2CFF', board: 'FFB800', gpu: 'FFB800', ram: ['FFB800', '7A2CFF'], strip: ['7A2CFF', 'B04CFF', 'FFB800'], lamp: 'FFB800', swap: ['7A2CFF', 'FFB800'], wall: '#0d0619' },
 ];
