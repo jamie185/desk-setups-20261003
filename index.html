@@ -17,7 +17,7 @@
   @keyframes up { to { opacity: 1; transform: none; filter: none; } }
 
   /* ---------- picker ---------- */
-  .picker { margin-top: 56px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .picker { margin-top: 56px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .pick { position: relative; border: 0; background: #15171d; color: inherit; border-radius: 18px; overflow: hidden; cursor: pointer; text-align: left;
           transition: transform .5s var(--ease), box-shadow .5s var(--ease); }
   .pick:hover { transform: scale(1.03); }
@@ -74,14 +74,14 @@
   .wpm { display: none; margin-top: 32px; border-radius: 18px; overflow: hidden; background: #000; }
   .wpm video { display: block; width: 100%; aspect-ratio: 32/9; object-fit: cover; }
   @media (max-width: 700px) { .wpm { display: block; } .stage { margin-top: 16px; } }
-  @media (max-width: 900px) { .picker { grid-template-columns: repeat(3, 1fr); } .detail { grid-template-columns: 1fr; } .wrap { padding: 56px 18px 100px; } }
+  @media (max-width: 900px) { .picker { grid-template-columns: repeat(2, 1fr); } .detail { grid-template-columns: 1fr; } .wrap { padding: 56px 18px 100px; } }
   @media (prefers-reduced-motion: reduce) { .fade { animation: none; opacity: 1; transform: none; filter: none; } }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1 class="fade">Pick your next<br>desk mood.</h1>
-  <p class="sub fade" style="animation-delay:.1s">Four new setups for your desk, ready to switch on. Each one is a live ultrawide wallpaper with lights to match. Tap one to see it run on your desk.</p>
+  <p class="sub fade" style="animation-delay:.1s">Six setups for your desk, ready to switch on. Blade Runner is the newest. Each one is a live ultrawide wallpaper with lights to match. Tap one to see it run on your desk.</p>
 
   <div class="picker fade" style="animation-delay:.2s" id="picker"></div>
 
@@ -108,7 +108,7 @@
       <h2>The lights</h2>
       <div class="parts" id="parts"></div>
       <div class="cmd" id="cmd"></div>
-      <p class="note">One command sets both PCs, the desk strip, the monitor light and the wallpaper on Glass. A plain on still boots your purple.</p>
+      <p class="note">One command sets both PCs, the desk strip, the monitor light and the wallpaper on Glass. A plain on brings back whichever scene you used last.</p>
     </div>
   </div>
 </div>
@@ -117,6 +117,8 @@
 const SETUPS = [
   { id: 'cyberpunk', fx: 'rain and cherry petals', names: ['pink', 'blue'], name: 'Cyberpunk', sub: 'Now', story: 'Your current setup. A ronin with a pink katana over a neon kanji city, koi drifting through the rain.',
     argb: 'FF0080', board: '8A00FF', boardF: 'FCE600', gpu: '00E5FF', ram: ['00E5FF', 'FF0080'], strip: ['FF0080', '8A00FF', '00E5FF'], lamp: '00E5FF', swap: ['FF0080', '00E5FF'], wall: '#12051d' },
+  { id: 'bladerunner', fx: 'rain, rolling violet fog, spinners crossing the sky, searchlights sweeping the clouds and a scan line drifting down the hologram', names: ['ultraviolet', 'electric blue'], name: 'Blade Runner', sub: 'New', story: 'A lone blade runner on a rain-soaked rooftop. A giant blue-haired hologram reaches down over the city, with the pyramid glowing through the smog behind her.',
+    argb: '7A1CFF', board: '8A00FF', boardF: 'FF2BD6', gpu: '2F6BFF', ram: ['2F6BFF', '7A1CFF'], strip: ['2F6BFF', '7A1CFF', 'FF2BD6'], lamp: '4C7DFF', swap: ['7A1CFF', '2F6BFF'], wall: '#0a0620' },
   { id: 'outrun', fx: 'warm dust drifting through the sunset', names: ['magenta', 'orange'], name: 'Outrun', sub: 'Synthwave sunset', story: 'A rider tears down a neon highway into a giant striped sun. Hot magenta grid, palm silhouettes, warm haze.',
     argb: 'FF2E97', board: '5B00FF', gpu: 'FF6A00', ram: ['FF6A00', 'FF2E97'], strip: ['FF6A00', 'FF2E97', '5B00FF'], lamp: 'FF2E97', swap: ['FF2E97', 'FF6A00'], wall: '#1a0716' },
   { id: 'bloodmoon', fx: 'embers rising past the moon', names: ['crimson', 'ember'], name: 'Blood Moon', sub: 'Oni samurai', story: 'An oni-masked samurai in a field of red spider lilies under a huge blood moon. Embers drift through the torii gates.',
@@ -162,7 +164,7 @@ function pick(s) {
   document.getElementById('name').textContent = s.name;
   document.getElementById('story').textContent = s.story;
   document.getElementById('moves').innerHTML = [
-    `The wallpaper loops seamlessly: neon that breathes and flickers, with ${s.fx}.`,
+    `The wallpaper loops seamlessly: neon that breathes slowly, with ${s.fx}.`,
     'RAM runs a slow waterfall in the two scene colours.',
     `About every minute the ${s.names[0]} and ${s.names[1]} trade places between the PCs.`,
     'The desk strip and monitor light hold the scene steady.'
